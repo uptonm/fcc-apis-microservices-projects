@@ -4,6 +4,7 @@
   "description": "returns a unix timestamp and the date string",
   "main": "index.js",
   "scripts": {
+    "start": "node .",
     "dev": "nodemon index.js"
   },
   "author": "Mike Upton",
