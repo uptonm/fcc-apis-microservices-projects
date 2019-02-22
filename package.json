@@ -4,7 +4,7 @@
   "description": "returns a unix timestamp and the date string",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "cd client && npm run build",
+    "heroku-postbuild": "cd client && yarn && yarn run build",
     "start": "node .",
     "dev": "nodemon index.js"
   },
