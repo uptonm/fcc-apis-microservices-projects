@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-class App extends Component {
+class Timestamp extends Component {
   render() {
     return (
-      <div className="container">
-        <h1 className="display-3 text-center">API Project: Timestamp Microservice</h1>
+      <div className="container" style={{ height: '100vh' }}>
+        <h1 className="display-4 text-center">API Project: Timestamp Microservice</h1>
         <hr />
         <h2>User Stories (WIP):</h2>
         <ol>
@@ -45,13 +45,10 @@ class App extends Component {
           <br />
           <h3>Example Output:</h3>
           <code>{`{"unix": 1451001600000, "utc":"Fri, 25 Dec 2015 00:00:00 GMT"}`}</code>
-          <br />
-          <br />
-          made for <a href="https://freecodecamp.com">freeCodeCamp</a>
         </div>
       </div>
     );
   }
 }
 
-export default App;
+export default Timestamp;
