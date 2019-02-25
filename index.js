@@ -30,7 +30,11 @@ getDateString = (req, res) => {
 app.get('/api/timestamp', getDateString);
 app.get('/api/timestamp/:date_string', getDateString);
 app.get('/api/whoami', (req, res) => {
-  res.status(200).send(req.headers);
+  res.status(200).send({
+    ipaddress: req.headers['x-forwarded-for'],
+    language: req.headers['accept-language'],
+    software: req.headers['user-agent']
+  });
 });
 
 app.get('*', (req, res) => {
