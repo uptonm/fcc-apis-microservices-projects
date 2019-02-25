@@ -7,3 +7,11 @@
   line-height: 60px;
   background-color: rgba(150, 150, 150, 0.2);
 }
+.bd-example {
+  border: solid #f7f7f9;
+  padding: 1.5rem;
+  margin-right: 0;
+  margin-left: 0;
+  border-width: 0.2rem;
+  border-radius: 0.7em;
+}
