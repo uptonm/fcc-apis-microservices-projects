@@ -29,6 +29,9 @@ getDateString = (req, res) => {
 
 app.get('/api/timestamp', getDateString);
 app.get('/api/timestamp/:date_string', getDateString);
+app.get('/api/whoami', (req, res) => {
+  res.status(200).send(req.headers);
+});
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/build/index.html'));
