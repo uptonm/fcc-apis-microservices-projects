@@ -4,7 +4,9 @@ import axios from 'axios';
 class UrlShortener extends Component {
   state = {
     url: '',
-    shortenedUrl: ''
+    shortenedUrl: '',
+    error: false,
+    errorMessage: ''
   };
 
   handleChange = e => {
@@ -13,10 +15,16 @@ class UrlShortener extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    const url = await axios.post('/api/url', { url: this.state.url });
-    this.setState({ shortenedUrl: url.data.code }, () => {
-      console.log(this.state);
+    const url = await axios.post('/api/url', { url: this.state.url }).catch(err => {
+      this.setState({
+        shortenedUrl: '',
+        error: true,
+        errorMessage: err.response.message
+      });
     });
+    if (url) {
+      this.setState({ shortenedUrl: url.data.code, error: false, errorMessage: '' });
+    }
   };
 
   render() {
@@ -54,12 +62,17 @@ class UrlShortener extends Component {
             <div className="form-group">
               <label htmlFor="url">Url to Shorten: </label>
               <input
-                className="form-control"
+                className={!this.state.error ? 'form-control' : 'form-control is-invalid'}
                 type="text"
                 id="url"
                 value={this.state.url}
                 onChange={this.handleChange.bind(this)}
               />
+              {!this.state.error ? (
+                ''
+              ) : (
+                <div className="invalid-feedback">Please provide a valid url.</div>
+              )}
             </div>
             {this.state.shortenedUrl.length > 0 ? (
               <h3>
