@@ -5,6 +5,7 @@ import './index.css';
 import Timestamp from './Timestamp';
 import HeaderParser from './HeaderParser';
 import UrlShortener from './UrlShortener';
+import ExerciseTracker from './ExerciseTracker';
 import Landing from './Landing';
 
 class App extends Component {
@@ -29,11 +30,17 @@ class App extends Component {
                   Url Shortener API
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" activeClassName="nav-link active" to="/exercise">
+                  Exercise Tracker API
+                </NavLink>
+              </li>
             </ul>
             <Route exact path="/" component={Landing} />
             <Route path="/timestamp" component={Timestamp} />
             <Route path="/headerparser" component={HeaderParser} />
             <Route path="/url" component={UrlShortener} />
+            <Route path="/exercise" component={ExerciseTracker} />
           </div>
         </Router>
         <footer className="footer">

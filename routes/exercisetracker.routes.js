@@ -65,31 +65,39 @@ module.exports = router => {
     // Verify user exists
     const userExists = await User.findById(req.query.userId);
     if (userExists) {
-      let exists;
-      // Check pagination parameters
-      if (req.query.from && req.query.to && req.query.limit) {
-        res.status(400).send({ Error: 'Invalid Pagination' });
-      } else if (req.query.from && req.query.to) {
-        // Get user's exercise's between <from> and <to>
-        exists = await Exercise.find({})
-          .populate('user')
-          .find({ user: userExists })
-          .skip(parseInt(req.query.from))
-          .limit(parseInt(req.query.to) - parseInt(req.query.from));
-        res.status(200).send(exists);
-      } else if (req.query.from && req.query.limit) {
-        // Get <limit> of user's exercise's starting at <from>
-        exists = await Exercise.find({})
-          .populate('user')
-          .find({ user: userExists })
-          .skip(parseInt(req.query.from))
-          .limit(parseInt(req.query.limit));
-        res.status(200).send(exists);
+      let exists = await Exercise.find({})
+        .populate('user')
+        .find({ user: userExists });
+      let dateRegx = new RegExp(/\d{4}-\d{2}-\d{2}/);
+      if (req.query.to && req.query.to.match(dateRegx)) {
+        exists = exists.filter(exercise => {});
       } else {
-        res.status(400).send({ Error: 'Unknown Error' });
+        res.send('This aint it cheif');
       }
     } else {
       return res.status(404).send({ Error: 'User does not exist' });
     }
   });
+};
+
+isDateAfter = (from, check) => {
+  // YYYY-MM-DD
+
+  var d1 = from.split('-'); // [YYYY, MM, DD]
+  var c = check.split('-');
+
+  var from = new Date(d1[2], parseInt(d1[1]) - 1, d1[0]); // -1 because months are from 0 to 11
+  var check = new Date(c[2], parseInt(c[1]) - 1, c[0]);
+
+  return check >= from;
+};
+
+isDateBefore = (to, check) => {
+  var d2 = to.split('-');
+  var c = check.split('-');
+
+  var to = new Date(d2[2], parseInt(d2[1]) - 1, d2[0]);
+  var check = new Date(c[2], parseInt(c[1]) - 1, c[0]);
+
+  return check <= to;
 };
