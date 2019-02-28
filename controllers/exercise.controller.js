@@ -30,8 +30,17 @@ isDateBefore = (check, to) => {
 };
 
 exports.get = async (req, res) => {
-  const exists = await User.find({});
-  res.status(200).send(exists);
+  if (req.query.username) {
+    const user = await User.findOne({ username: req.query.username });
+    if (user) {
+      return res.status(200).send(user);
+    } else {
+      return res.status(404).send({ Error: "User not found" });
+    }
+  } else {
+    const exists = await User.find({});
+    return res.status(200).send(exists);
+  }
 };
 
 exports.postUser = async (req, res) => {
