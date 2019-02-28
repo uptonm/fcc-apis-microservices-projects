@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import './index.css';
-import Timestamp from './Timestamp';
-import HeaderParser from './HeaderParser';
-import UrlShortener from './UrlShortener';
-import ExerciseTracker from './ExerciseTracker';
-import Landing from './Landing';
+import "./index.css";
+import Timestamp from "./Timestamp";
+import HeaderParser from "./HeaderParser";
+import UrlShortener from "./UrlShortener";
+import ExerciseTracker from "./ExerciseTracker";
+import Navbar from "./Navbar";
+import Landing from "./Landing";
 
 class App extends Component {
   render() {
@@ -14,28 +15,7 @@ class App extends Component {
       <div>
         <Router>
           <div>
-            <ul className="nav">
-              <li className="nav-item">
-                <NavLink className="nav-link" activeClassName="active" to="/timestamp">
-                  Timestamp API
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" activeClassName="nav-link active" to="/headerparser">
-                  Header Parser API
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" activeClassName="nav-link active" to="/url">
-                  Url Shortener API
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" activeClassName="nav-link active" to="/exercise">
-                  Exercise Tracker API
-                </NavLink>
-              </li>
-            </ul>
+            <Navbar />
             <Route exact path="/" component={Landing} />
             <Route path="/timestamp" component={Timestamp} />
             <Route path="/headerparser" component={HeaderParser} />
@@ -45,7 +25,7 @@ class App extends Component {
         </Router>
         <footer className="footer">
           <span>
-            made with <i className="fas fa-heart" /> for{' '}
+            made with <i className="fas fa-heart" /> for{" "}
             <a href="https://freecodecamp.com">freeCodeCamp</a>
           </span>
         </footer>

@@ -8,10 +8,23 @@
   background-color: rgba(150, 150, 150, 0.2);
 }
 .bd-example {
+  position: relative;
   border: solid #ececec;
   padding: 1.5rem;
   margin-right: 0;
   margin-left: 0;
   border-width: 0.2rem;
   border-radius: 0.7em;
+}
+.float-top-right {
+  position: absolute;
+  top: 0.6em;
+  right: 0.7em;
+}
+.fa-times {
+  font-size: 1.2em !important;
+  opacity: 0.3;
+}
+.fa-times:hover {
+  opacity: 1;
 }
