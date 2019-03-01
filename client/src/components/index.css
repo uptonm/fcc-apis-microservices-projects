@@ -16,6 +16,10 @@
   border-width: 0.2rem;
   border-radius: 0.7em;
 }
+.center-list {
+  display: flex;
+  justify-content: center;
+}
 .float-top-right {
   position: absolute;
   top: 0.6em;

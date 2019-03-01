@@ -1,38 +1,61 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
 
 class FileMetadata extends Component {
   state = {
-    file: null
+    label: "Choose file..."
   };
-  handleSubmit = async event => {
+  handleChange = event => {
     event.preventDefault();
-    if (this.state.file) {
-      const res = await axios.post('/api/file/upload', this.state.file);
-      console.log(res);
-    }
-  };
-  handleChange = async event => {
-    event.preventDefault();
-    await this.setState({ file: event.target.value });
+    this.setState({ label: event.target.value });
   };
   render() {
     return (
-      <div className="container text-center">
+      <div className="container">
+        <h1 className="display-4 text-center">
+          API Project: File Metadata Microservice{" "}
+        </h1>
+        <hr />
+        <h4>User Stories: </h4>
+        <ol style={{ margin: "0 auto" }}>
+          <li>I can submit a form object that includes a file upload. </li>
+          <li>
+            The from file input field has the "name" attribute set to "upfile".
+            We rely on this in testing.{" "}
+          </li>
+          <li>
+            When I submit something, I will receive the file name, and size in
+            bytes within the JSON response.
+          </li>
+        </ol>
+        <br />
+        <h4 className="text-center">Usage: Please Upload a File ...</h4>
+        <br />
         <form
-          action="/profile"
-          method="post"
-          enctype="multipart/form-data"
+          action="/api/file/upload"
+          method="POST"
+          encType="multipart/form-data"
           className="bd-example"
-          onSubmit={this.handleSubmit.bind(this)}
+          style={{ margin: "0 auto", width: "60%" }}
         >
-          <input
-            type="file"
-            name="avatar"
-            value={this.state.file}
-            onChange={this.handleChange.bind(this)}
-          />
-          <button className="btn btn-primary" type="submit">
+          <div className="custom-file">
+            <input
+              id="file"
+              type="file"
+              name="file"
+              className="custom-file-input"
+              onChange={this.handleChange.bind(this)}
+            />
+            <label className="custom-file-label" htmlFor="file">
+              {this.state.label}
+            </label>
+          </div>
+
+          <button
+            className="btn btn-primary"
+            id="button"
+            type="submit"
+            style={{ marginTop: "1em" }}
+          >
             Upload
           </button>
         </form>

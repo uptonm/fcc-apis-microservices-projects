@@ -49,6 +49,15 @@ export default () => {
               Exercise Tracker API
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink
+              className="nav-link"
+              activeClassName="nav-link active"
+              to="/file"
+            >
+              File Metadata API
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>
