@@ -38,6 +38,7 @@ app.use(cors());
 
 require('./routes/exercisetracker.routes')(router);
 require('./routes/urlshortener.routes')(router);
+require('./routes/filemetadata.routes')(router);
 require('./routes/timestamp.routes')(router);
 require('./routes/whoami.routes')(router);
 
