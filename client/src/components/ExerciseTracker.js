@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import * as environment from "../assets/environment.json";
+import JSONPretty from "react-json-pretty";
 
 class ExerciseTracker extends Component {
   state = {
@@ -63,13 +65,13 @@ class ExerciseTracker extends Component {
         user: this.state.userId.value,
         description: this.state.description.value,
         duration: this.state.duration.value,
-        date: this.state.date
+        date: this.state.date.value
       };
     }
     await axios.post("/api/exercise", exercise).catch(err => {
       this.setState({
         date: {
-          ...this.state.date,
+          ...this.state.date.value,
           error: err.response.data.Error
         }
       });
@@ -92,18 +94,49 @@ class ExerciseTracker extends Component {
         });
       });
     if (user) {
-      this.setState({
-        username: {
-          ...this.state.username,
-          error: ""
+      const exercises = await axios
+        .get(`/api/exercise/log?username=${this.state.username.value}`)
+        .catch(err => {
+          this.setState({
+            username: {
+              ...this.state.username,
+              error: err.response.data.Error
+            },
+            content: {
+              status: false
+            }
+          });
+        });
+      this.setState(
+        {
+          username: {
+            ...this.state.username,
+            error: ""
+          },
+          content: {
+            status: "user",
+            title: "User: ",
+            exercises: exercises.data,
+            ...user.data
+          }
         },
-        content: {
-          status: "user",
-          title: "User: ",
-          ...user.data
-        }
-      });
+        () => console.log(this.state.content)
+      );
     }
+  };
+
+  parseContent = content => {
+    return {
+      _id: content._id,
+      username: content.username,
+      exercises: content.exercises.map(exercise => ({
+        _id: exercise._id,
+        username: exercise.user.username,
+        description: exercise.description,
+        duration: exercise.duration,
+        date: exercise.date
+      }))
+    };
   };
 
   handleChange = event => {
@@ -125,12 +158,10 @@ class ExerciseTracker extends Component {
               className="fas fa-times float-top-right"
               onClick={() => this.setState({ content: {} })}
             />
-            <h3>{this.state.content.title}</h3>
-            <code>_id: </code>
-            {this.state.content._id}
-            <br />
-            <code>username: </code>
-            {this.state.content.username}
+            <JSONPretty
+              id="data"
+              data={this.parseContent(this.state.content)}
+            />
           </div>
         );
       case "exercise":
@@ -138,7 +169,22 @@ class ExerciseTracker extends Component {
         return (
           <div className="bd-example" style={{ marginTop: "2.2em" }}>
             <p>GET user's exercise log:</p>
-            <code>GET /api/exercise/log?{`{userId}`}[&from][&to][&limit]</code>
+            <code>
+              GET{" "}
+              <a
+                href={`${environment.PROJECT_URL}/api/exercise/log?username=${
+                  this.state.username.value
+                    ? this.state.username.value
+                    : "username"
+                }`}
+              >
+                /api/exercise/log?
+                {this.state.username.value
+                  ? `username=${this.state.username.value}`
+                  : "{username}"}
+                [&from][&to][&limit]
+              </a>
+            </code>
             <br />
             <br />
             <p>
@@ -209,7 +255,7 @@ class ExerciseTracker extends Component {
               <h3>Add Exercises:</h3>
               <code>POST [project_url]/api/exercise</code>
               <div className="form-group" style={{ marginTop: "1em" }}>
-                <label htmlFor="userId">UserId</label>
+                <label htmlFor="userId">Username</label>
                 <input
                   className="form-control"
                   required

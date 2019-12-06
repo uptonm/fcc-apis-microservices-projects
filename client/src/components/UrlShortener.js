@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
+import * as environment from "../assets/environment.json";
 
 class UrlShortener extends Component {
   state = {
-    url: '',
-    shortenedUrl: '',
+    url: "",
+    shortenedUrl: "",
     error: false,
-    errorMessage: ''
+    errorMessage: ""
   };
 
   handleChange = e => {
@@ -15,46 +16,59 @@ class UrlShortener extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    const url = await axios.post('/api/url', { url: this.state.url }).catch(err => {
-      this.setState({
-        shortenedUrl: '',
-        error: true,
-        errorMessage: err.response.message
+    const url = await axios
+      .post("/api/url", { url: this.state.url })
+      .catch(err => {
+        this.setState({
+          shortenedUrl: "",
+          error: true,
+          errorMessage: err.response.message
+        });
       });
-    });
     if (url) {
-      this.setState({ shortenedUrl: url.data.code, error: false, errorMessage: '' });
+      this.setState({
+        shortenedUrl: url.data.code,
+        error: false,
+        errorMessage: ""
+      });
     }
   };
 
   render() {
     return (
       <div className="container">
-        <h1 className="display-4 text-center">API Project: URL Shortener Microservice</h1>
+        <h1 className="display-4 text-center">
+          API Project: URL Shortener Microservice
+        </h1>
         <hr />
         <h2>User Story:</h2>
         <ol>
           <li>
-            I can POST a URL to <code>[project_url]/api/shorturl/new</code> and I will receive a
-            shortened URL in the JSON response.
+            I can POST a URL to <code>[project_url]/api/shorturl/new</code> and
+            I will receive a shortened URL in the JSON response.
             <br />
-            Example :<code>{`\t{"original_url": "www.google.com","short_url":1}`}</code>
+            Example :
+            <code>{`\t{"original_url": "www.google.com","short_url":1}`}</code>
           </li>
           <li>
-            If I pass an invalid URL that doesn't follow the{' '}
+            If I pass an invalid URL that doesn't follow the{" "}
             <code>http(s)://www.example.com(/more/routes)</code>
-            format, the JSON response will contain an error like{' '}
+            format, the JSON response will contain an error like{" "}
             <code>{`{"error":"invalid URL"}`}</code>
             <br />
-            HINT: to be sure that the submitted url points to a valid site you can use the function
-            dns.lookup(host, cb) from the dns core module.
+            HINT: to be sure that the submitted url points to a valid site you
+            can use the function dns.lookup(host, cb) from the dns core module.
           </li>
-          <li>When I visit the shortened URL, it will redirect me to my original link.</li>
+          <li>
+            When I visit the shortened URL, it will redirect me to my original
+            link.
+          </li>
         </ol>
         <div className="container text-center">
           <h3>Short URL Creation:</h3>
           <span>
-            example: <code>POST [project_url]/api/url</code> - <code>https://google.com</code>
+            example: <code>POST [project_url]/api/url</code> -{" "}
+            <code>https://google.com</code>
           </span>
           <br />
           <br />
@@ -62,26 +76,30 @@ class UrlShortener extends Component {
             <div className="form-group">
               <label htmlFor="url">Url to Shorten: </label>
               <input
-                className={!this.state.error ? 'form-control' : 'form-control is-invalid'}
+                className={
+                  !this.state.error ? "form-control" : "form-control is-invalid"
+                }
                 type="text"
                 id="url"
                 value={this.state.url}
                 onChange={this.handleChange.bind(this)}
               />
               {!this.state.error ? (
-                ''
+                ""
               ) : (
-                <div className="invalid-feedback">Please provide a valid url.</div>
+                <div className="invalid-feedback">
+                  Please provide a valid url.
+                </div>
               )}
             </div>
             {this.state.shortenedUrl.length > 0 ? (
               <h3>
-                <a href={`api/url/${this.state.shortenedUrl}`}>{`[project_url]/api/url${
-                  this.state.shortenedUrl
-                }`}</a>
+                <a
+                  href={`${environment.PROJECT_URL}/api/url/${this.state.shortenedUrl}`}
+                >{`[project_url]/api/url/${this.state.shortenedUrl}`}</a>
               </h3>
             ) : (
-              ''
+              ""
             )}
             <button className="btn btn-lg btn-primary" type="submit">
               Submit
@@ -89,7 +107,7 @@ class UrlShortener extends Component {
           </form>
           <br />
           <h3>Example Usage:</h3>
-          <a href="/api/url/9a31e9">
+          <a href={`${environment.PROJECT_URL}/api/url/9a31e9`}>
             <code>[this_project_url]/api/url/9a31e9</code>
           </a>
           <br />

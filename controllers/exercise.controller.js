@@ -61,7 +61,7 @@ exports.postUser = async (req, res) => {
 
 exports.postExercise = async (req, res) => {
   // Check for required fields
-  const exists = await User.findById(req.body.user);
+  const exists = await User.findOne({ username: req.body.user });
   if (!exists) {
     return res.status(404).send({ Error: "User not found" });
   }
@@ -97,14 +97,15 @@ exports.postExercise = async (req, res) => {
 };
 
 exports.log = async (req, res) => {
+  console.log(req.query);
   // Verify User parameter is supplied
-  if (!req.query.userId) {
+  if (!req.query.username) {
     return res
       .status(400)
-      .send({ Error: "UserId query parameter is required." });
+      .send({ Error: "Username query parameter is required." });
   }
   // Verify user exists
-  const userExists = await User.findById(req.query.userId);
+  const userExists = await User.findOne({ username: req.query.username });
   if (userExists) {
     let exists = await Exercise.find({})
       .populate("user")
